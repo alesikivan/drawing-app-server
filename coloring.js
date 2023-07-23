@@ -19,6 +19,10 @@ app.use('/proxy/api/', (req, res, next) => {
   const proxy = createProxyMiddleware({
     target,
     changeOrigin: true,
+    onProxyReq: function (proxyReq, req, res) {
+      // Здесь можно добавить или изменить заголовки запроса
+      proxyReq.setHeader('Authorization', 'Bearer ' + process.env.OPENAI_API_KEY);
+    },
     onProxyRes: function (proxyRes, req, res) {
       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
     }
